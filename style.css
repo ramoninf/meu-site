@@ -5,7 +5,8 @@
     nav a{margin: 20px; color: #fff; text-decoration: none; padding: 20px; font-size: 22px;}
     a:hover{color: green;}
     .logo{text-align: center;}
-    h2 h3 a{text-align: center; color:#fff; text-decoration: none;}
+    h2  a{text-align: center; color:#fff; text-decoration: none;}
+    h3  a{text-align: center; color:#fff; text-decoration: none;}
     .boxVideo iframe {
     position: absolute;
     top: 0;
