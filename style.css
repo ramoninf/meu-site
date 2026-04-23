@@ -2,7 +2,7 @@
    .container{text-align:center;}
     body{background-color: #000; font-family: 'Oswald', sans-serif;color: #fff;}
     nav{display: flex; justify-content: center; }
-    nav a{margin: 20px; color: #fff; text-decoration: none; padding: 20px; font-size: 22px; border-radius: 20px;}
+    nav buton a{margin: 20px; color: #fff; text-decoration: none; padding: 20px; font-size: 22px; border-radius: 20px;}
     a:hover{color: green;}
     
     .logo{text-align: center;}
