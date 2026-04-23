@@ -5,6 +5,14 @@
     nav a{margin: 20px; color: #fff; text-decoration: none; padding: 20px; font-size: 22px;}
     a:hover{color: green;}
     .logo{text-align: center;}
+   .button-arrendado {
+    border-radius: 10px; /* Define o raio da borda */
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
     h2  a{text-align: center; color:#fff; text-decoration: none;}
     h3  a{text-align: center; color:#fff; text-decoration: none;}
     .boxVideo iframe {
