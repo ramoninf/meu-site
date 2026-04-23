@@ -4,6 +4,7 @@
     nav{display: flex; justify-content: center; }
     nav a{margin: 20px; color: #fff; text-decoration: none; padding: 20px; font-size: 22px;}
     a:hover{color: green;}
+    .button{borde-radius:20px;}
     .logo{text-align: center;}
     h2  a{text-align: center; color:#fff; text-decoration: none;}
     h3  a{text-align: center; color:#fff; text-decoration: none;}
