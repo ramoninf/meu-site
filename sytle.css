@@ -1,0 +1,10 @@
+*{margin: 5px;padding: 0;font-family: arial;}
+	nav{display: flex;text-decoration: none;}
+	nav a{margin: 10px;text-decoration: none;padding: 10px;color: #000 ;font-size: 20px;}
+	a:hover{color: #ddd;}
+	h2{margin: 10px;margin: 10px;}
+   .video{text-align: center;}
+   .footer{display: flex; justify-content: center;}
+   .footer img{width: 40px;height: 40px;}
+   .footer a{color: #fff; text-decoration: none; margin:10px;}
+	
