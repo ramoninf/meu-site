@@ -1,4 +1,4 @@
-*{margin: 3px;padding: 0;font-family: arial;}
+*{margin: 5px;padding: 0;font-family: arial;}
 	nav{display: flex;text-decoration: none;}
 	nav a{margin: 10px;text-decoration: none;padding: 10px;color: #000 ;font-size: 20px;}
 	a:hover{color: #ddd;}
