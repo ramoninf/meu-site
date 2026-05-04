@@ -6,5 +6,5 @@
     .video{text-align: center;}
    .footer{display: flex; justify-content: center;}
    .footer img{width: 40px;height: 40px;}
-   .footer a{color: #fff; text-decoration: none; margin:10px;}
+   .footer a{color: #fff; text-decoration: none; margin:10px;text-align: center;}
 	
