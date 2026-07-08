@@ -1,0 +1,248 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tech Solutions - Manutenção e Programação Web</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+    color:#333;
+    line-height:1.6;
+}
+
+header{
+    background:linear-gradient(135deg,#0d6efd,#0a58ca);
+    color:white;
+    text-align:center;
+    padding:60px 20px;
+}
+
+header h1{
+    font-size:3rem;
+    margin-bottom:10px;
+}
+
+header p{
+    font-size:1.2rem;
+}
+
+nav{
+    background:#222;
+    padding:15px;
+    text-align:center;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    margin:0 15px;
+    font-weight:bold;
+}
+
+nav a:hover{
+    color:#0d6efd;
+}
+
+.container{
+    width:90%;
+    max-width:1200px;
+    margin:auto;
+    padding:40px 0;
+}
+
+section{
+    margin-bottom:50px;
+}
+
+h2{
+    color:#0d6efd;
+    margin-bottom:20px;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.card h3{
+    color:#0a58ca;
+    margin-bottom:10px;
+}
+
+.btn{
+    display:inline-block;
+    margin-top:15px;
+    background:#0d6efd;
+    color:white;
+    padding:10px 20px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.btn:hover{
+    background:#084298;
+}
+
+#mensagem{
+    margin-top:15px;
+    font-weight:bold;
+    color:green;
+}
+
+footer{
+    background:#222;
+    color:white;
+    text-align:center;
+    padding:20px;
+}
+</style>
+</head>
+<body>
+
+<header>
+    <h1>RAMONINFTEC</h1>
+    <p>Manutenção de Computadores, Notebooks e Desenvolvimento Web</p>
+</header>
+
+<nav>
+    <a href="#manutencao">Manutenção</a>
+    <a href="#programacao">Programação Web</a>
+    <a href="#dicas">Dicas</a>
+    <a href="#contato">Contato</a>
+</nav>
+
+<div class="container">
+
+    <section id="manutencao">
+        <h2>Manutenção de Computadores e Notebooks</h2>
+
+        <div class="cards">
+            <div class="card">
+                <h3>Limpeza Preventiva</h3>
+                <p>
+                    Remoção de poeira, troca de pasta térmica e
+                    manutenção preventiva para evitar superaquecimento.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Upgrade de Hardware</h3>
+                <p>
+                    Instalação de SSD, memória RAM e melhorias para
+                    aumentar o desempenho do equipamento.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Remoção de Vírus</h3>
+                <p>
+                    Eliminação de malwares, spywares e otimização
+                    completa do sistema operacional.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="programacao">
+        <h2>Programação Web</h2>
+
+        <div class="cards">
+            <div class="card">
+                <h3>HTML5</h3>
+                <p>
+                    Estrutura moderna para criação de páginas e
+                    aplicações web responsivas.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>CSS3</h3>
+                <p>
+                    Design moderno com animações, layouts flexíveis
+                    e interfaces profissionais.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>JavaScript</h3>
+                <p>
+                    Interatividade, consumo de APIs e desenvolvimento
+                    de aplicações dinâmicas.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="dicas">
+        <h2>Dica Tecnológica do Dia</h2>
+
+        <p>
+            Manter o sistema atualizado, utilizar SSD e realizar
+            limpeza interna periodicamente pode aumentar a vida útil
+            do computador e melhorar significativamente o desempenho.
+        </p>
+
+        <button class="btn" onclick="mostrarMensagem()">
+            Ver Dica Especial
+        </button>
+
+        <div id="mensagem"></div>
+    </section>
+
+    <section id="contato">
+        <h2>Contato</h2>
+
+        <p>
+            Precisa de manutenção ou desenvolvimento de sites?
+            Entre em contato para solicitar um orçamento.
+        </p>
+
+        <button class="btn" onclick="contato()">
+            Solicitar Orçamento
+        </button>
+    </section>
+
+</div>
+
+<footer>
+    <p>&copy; RAMONINFTEC- Todos os direitos reservados.</p>
+</footer>
+
+<script>
+function mostrarMensagem(){
+    document.getElementById("mensagem").innerHTML =
+    "💡 Trocar um HD por SSD pode deixar seu computador até 10x mais rápido.";
+}
+
+function contato(){
+    alert("Email:_ramoninf215@gmail.com \n Fone:31");
+}
+</script>
+
+</body>
+</html>
+```
