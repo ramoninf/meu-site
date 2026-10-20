@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RamonInfTec | Blog & Vídeos de Tecnologia</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkbg: '#090d16',
+                        cardbg: '#111827',
+                        neoncyan: '#00f0ff',
+                        neonblue: '#0077ff',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #090d16;
+            color: #f1f5f9;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090d16;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f0ff;
+        }
+        .glow-effect {
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.12);
+        }
+        .neon-border {
+            border-color: rgba(0, 240, 255, 0.25);
+        }
+        .neon-border:focus-within, .neon-border:hover {
+            border-color: rgba(0, 240, 255, 0.6);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-[#00f0ff] selection:text-black">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-40 backdrop-blur-md bg-darkbg/90 border-b border-slate-800">
+        <div class="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between">
+            <!-- Logo & Reset Home -->
+            <a href="index.html" onclick="resetHome(event)" class="flex items-center space-x-2 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#00f0ff] to-[#0077ff] flex items-center justify-center shadow-lg shadow-[#00f0ff]/20 group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-terminal text-black font-extrabold text-lg"></i>
+                </div>
+                <div>
+                    <span class="text-xl font-bold tracking-tight bg-gradient-to-r from-[#00f0ff] to-[#0077ff] bg-clip-text text-transparent">RamonInfTec</span>
+                    <span class="block text-[10px] text-[#00f0ff]/80 tracking-widest uppercase font-mono">Tech Blog & Feed</span>
+                </div>
+            </a>
+
+            <!-- Search Bar (Desktop & Tablet) -->
+            <div class="hidden md:flex items-center relative w-64">
+                <i class="fa-solid fa-search absolute left-3 text-slate-400 text-sm"></i>
+                <input type="text" id="searchInput" placeholder="Pesquisar vídeos..." 
+                    class="w-full bg-slate-900/90 text-slate-200 pl-9 pr-4 py-2 rounded-xl text-sm border border-slate-700/80 focus:outline-none focus:border-[#00f0ff] focus:ring-1 focus:ring-[#00f0ff] transition-all">
+            </div>
+
+            <!-- Navigation Controls -->
+            <div class="flex items-center space-x-2">
+                <a href="index.html" onclick="resetHome(event)" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-[#00f0ff] hover:border-[#00f0ff]/50 text-xs font-medium transition-colors flex items-center gap-1.5" title="Voltar ao Início">
+                    <i class="fa-solid fa-house text-xs"></i>
+                    <span class="hidden sm:inline">Início</span>
+                </a>
+                <a href="https://www.youtube.com/@ramoninftec" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-red-400 hover:border-red-500/50 transition-colors" title="Canal YouTube">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Mobile Search Bar -->
+        <div class="md:hidden px-4 pb-3">
+            <div class="relative w-full">
+                <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-400 text-sm"></i>
+                <input type="text" id="searchMobileInput" placeholder="Pesquisar vídeos..." 
+                    class="w-full bg-slate-900/90 text-slate-200 pl-9 pr-4 py-2 rounded-xl text-sm border border-slate-700/80 focus:outline-none focus:border-[#00f0ff] focus:ring-1 focus:ring-[#00f0ff] transition-all">
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content: Single Column Feed -->
+    <main class="flex-grow max-w-xl w-full mx-auto px-4 py-8" id="feed">
+        
+        <!-- Welcome Hero Section -->
+        <section class="mb-8 p-6 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900/90 to-blue-950/40 border neon-border glow-effect relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-[#00f0ff]/10 rounded-full blur-3xl pointer-events-none"></div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-2">
+                Bem-vindo ao <span class="bg-gradient-to-r from-[#00f0ff] to-[#0077ff] bg-clip-text text-transparent">RamonInfTec</span>
+            </h1>
+            <p class="text-slate-400 text-sm leading-relaxed">
+                Conteúdos selecionados sobre infraestrutura de TI, desenvolvimento de software, suporte empresarial e monetização de projetos. Interaja, comente e salve seus favoritos!
+            </p>
+        </section>
+
+        <!-- Video Feed Container (Single Column) -->
+        <div id="videoFeed" class="space-y-10">
+            
+            <!-- Video Card 1 -->
+            <article class="video-card bg-slate-900/90 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl hover:border-[#00f0ff]/40 transition-all duration-300" 
+                     data-id="f0G9YDmZsl4" 
+                     data-title="como eu iniciaria um sistema do zero arquitetura desenvolvimento">
+                <div class="p-5 border-b border-slate-800/80 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-red-600 to-orange-600 flex items-center justify-center text-white font-bold text-sm shadow">
+                            DA
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-slate-200 text-sm sm:text-base">O DEV AGUNIADO</h3>
+                            <span class="text-xs text-slate-400 flex items-center gap-1"><i class="fa-regular fa-calendar text-[10px]"></i> Vídeo Oficial</span>
+                        </div>
+                    </div>
+                    <span class="px-2.5 py-1 rounded-full bg-[#00f0ff]/10 border border-[#00f0ff]/30 text-[#00f0ff] text-xs font-mono">Arquitetura</span>
+                </div>
+
+                <div class="px-5 pt-4">
+                    <h2 class="text-lg font-bold text-white mb-2 leading-snug">Como eu iniciaria um sistema do zero</h2>
+                    <p class="text-slate-300 text-sm mb-4 leading-relaxed">
+                        Diretrizes essenciais, escolha de tecnologias, modelagem inicial e arquitetura para construir sistemas robustos e prontos para escalar.
+                    </p>
+                </div>
+
+                <!-- Responsive YouTube Player -->
+                <div class="relative w-full pb-[56.25%] bg-black">
+                    <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/f0G9YDmZsl4" title="Como eu iniciaria um sistema do zero" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+
+                <!-- Action Bar -->
+                <div class="p-4 bg-slate-900/70 border-t border-slate-800 flex items-center justify-between text-slate-400 text-sm">
+                    <div class="flex items-center space-x-4">
+                        <button onclick="handleLike('f0G9YDmZsl4', this)" class="like-btn flex items-center space-x-1.5 hover:text-[#00f0ff] transition-colors group">
+                            <span class="w-8 h-8 rounded-lg bg-slate-800 group-hover:bg-[#00f0ff]/10 flex items-center justify-center transition-colors">
+                                <i class="fa-regular fa-thumbs-up"></i>
+                            </span>
+                            <span class="like-count font-medium text-xs">142</span>
+                        </button>
+                        <button onclick="handleFavorite('f0G9YDmZsl4', this)" class="fav-btn flex items-center space-x-1.5 hover:text-red-400 transition-colors group" title="Favoritar">
+                            <span class="w-8 h-8 rounded-lg bg-slate-800 group-hover:bg-red-500/10 flex items-center justify-center transition-colors">
+                                <i class="fa-regular fa-heart"></i>
+                            </span>
+                            <span class="fav-text text-xs font-medium hidden sm:inline">Salvar</span>
+                        </button>
+                    </div>
+                    <div>
+                        <button onclick="handleShare('https://www.youtube.com/watch?v=f0G9YDmZsl4')" class="flex items-center space-x-1.5 hover:text-[#00f0ff] transition-colors group">
+                            <span class="w-8 h-8 rounded-lg bg-slate-800 group-hover:bg-[#00f0ff]/10 flex items-center justify-center transition-colors">
+                                <i class="fa-solid fa-share-nodes"></i>
+                            </span>
+                            <span class="text-xs font-medium">Compartilhar</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Comments Section -->
+                <div class="p-4 bg-slate-950/80 border-t border-slate-800">
+                    <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+                        <i class="fa-regular fa-comments text-[#00f0ff]"></i> Comentários (<span class="comment-count">0</span>)
+                    </h4>
+                    
+                    <div class="space-y-3 mb-4 comment-list">
+                        <!-- Dynamic Comments injected here -->
+                    </div>
+
+                    <!-- Add Comment Form -->
+                    <form onsubmit="addComment('f0G9YDmZsl4', event, this)" class="flex gap-2">
+                        <input type="text" placeholder="Escreva um comentário..." required
+                            class="flex-grow bg-slate-900 text-slate-200 px-3 py-2 rounded-xl text-xs border border-slate-700/80 focus:outline-none focus:border-[#00f0ff] focus:ring-1 focus:ring-[#00f0ff]">
+                        <button type="submit" class="px-4 py-2 bg-gradient-to-r from-[#00f0ff] to-[#0077ff] hover:opacity-90 text-black font-bold text-xs rounded-xl shadow-md transition-all">
+                            Enviar
+                        </button>
+                    </form>
+                </div>
+            </article>
+
+            <!-- Video Card 2 -->
+            <article class="video-card bg-slate-900/90 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl hover:border-[#00f0ff]/40 transition-all duration-300" 
+                     data-id="Rwm0FIbvJ8o" 
+                     data-title="o que compensa mais tecnico ti atender clientes comuns corporativos ar tecnologia">
+                <div class="p-5 border-b border-slate-800/80 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center text-white font-bold text-sm shadow">
+                            AR
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-slate-200 text-sm sm:text-base">AR Tecnologia</h3>
+                            <span class="text-xs text-slate-400 flex items-center gap-1"><i class="fa-regular fa-calendar text-[10px]"></i> Vídeo Oficial</span>
+                        </div>
+                    </div>
+                    <span class="px-2.5 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-mono">Infra & Negócios</span>
+                </div>
+
+                <div class="px-5 pt-4">
+                    <h2 class="text-lg font-bold text-white mb-2 leading-snug">O que compensa mais? O Técnico em TI atender apenas Clientes Comuns ou apenas Clientes Corporativos?</h2>
+                    <p class="text-slate-300 text-sm mb-4 leading-relaxed">
+                        Análise aprofundada comparando margens de lucro, contratos B2B e atendimento avulso para técnicos de suporte e infraestrutura.
+                    </p>
+                </div>
+
+                <!-- Responsive YouTube Player -->
+                <div class="relative w-full pb-[56.25%] bg-black">
+                    <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/Rwm0FIbvJ8o" title="O que compensa mais? O Técnico em TI..." frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+
+                <!-- Action Bar -->
+                <div class="p-4 bg-slate-900/70 border-t border-slate-800 flex items-center justify-between text-slate-400 text-sm">
+                    <div class="flex items-center space-x-4">
+                        <button onclick="handleLike('Rwm0FIbvJ8o', this)" class="like-btn flex items-center space-x-1.5 hover:text-[#00f0ff] transition-colors group">
+                            <span class="w-8 h-8 rounded-lg bg-slate-800 group-hover:bg-[#00f0ff]/10 flex items-center justify-center transition-colors">
+                                <i class="fa-regular fa-thumbs-up"></i>
+                            </span>
+                            <span class="like-count font-medium text-xs">98</span>
+                        </button>
+                        <button onclick="handleFavorite('Rwm0FIbvJ8o', this)" class="fav-btn flex items-center space-x-1.5 hover:text-red-400 transition-colors group" title="Favoritar">
+                            <span class="w-8 h-8 rounded-lg bg-slate-800 group-hover:bg-red-500/10 flex items-center justify-center transition-colors">
+                                <i class="fa-regular fa-heart"></i>
+                            </span>
+                            <span class="fav-text text-xs font-medium hidden sm:inline">Salvar</span>
+                        </button>
+                    </div>
+                    <div>
+                        <button onclick="handleShare('https://www.youtube.com/watch?v=Rwm0FIbvJ8o')" class="flex items-center space-x-1.5 hover:text-[#00f0ff] transition-colors group">
+                            <span class="w-8 h-8 rounded-lg bg-slate-800 group-hover:bg-[#00f0ff]/10 flex items-center justify-center transition-colors">
+                                <i class="fa-solid fa-share-nodes"></i>
+                            </span>
+                            <span class="text-xs font-medium">Compartilhar</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Comments Section -->
+                <div class="p-4 bg-slate-950/80 border-t border-slate-800">
+                    <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+                        <i class="fa-regular fa-comments text-[#00f0ff]"></i> Comentários (<span class="comment-count">0</span>)
+                    </h4>
+                    
+                    <div class="space-y-3 mb-4 comment-list">
+                        <!-- Dynamic Comments injected here -->
+                    </div>
+
+                    <!-- Add Comment Form -->
+                    <form onsubmit="addComment('Rwm0FIbvJ8o', event, this)" class="flex gap-2">
+                        <input type="text" placeholder="Escreva um comentário..." required
+                            class="flex-grow bg-slate-900 text-slate-200 px-3 py-2 rounded-xl text-xs border border-slate-700/80 focus:outline-none focus:border-[#00f0ff] focus:ring-1 focus:ring-[#00f0ff]">
+                        <button type="submit" class="px-4 py-2 bg-gradient-to-r from-[#00f0ff] to-[#0077ff] hover:opacity-90 text-black font-bold text-xs rounded-xl shadow-md transition-all">
+                            Enviar
+                        </button>
+                    </form>
+                </div>
+            </article>
+
+            <!-- Video Card 3 -->
+            <article class="video-card bg-slate-900/90 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl hover:border-[#00f0ff]/40 transition-all duration-300" 
+                     data-id="W374RVnZlkQ" 
+                     data-title="mysql backup restore banco de dados ramoninftec">
+                <div class="p-5 border-b border-slate-800/80 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-600 to-blue-700 flex items-center justify-center text-white font-bold text-sm shadow">
+                            RI
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-slate-200 text-sm sm:text-base">ramoninftec</h3>
+                            <span class="text-xs text-slate-400 flex items-center gap-1"><i class="fa-regular fa-calendar text-[10px]"></i> Vídeo Oficial</span>
+                        </div>
+                    </div>
+                    <span class="px-2.5 py-1 rounded-full bg-[#00f0ff]/10 border border-[#00f0ff]/30 text-[#00f0ff] text-xs font-mono">Banco de Dados</span>
+                </div>
+
+                <div class="px-5 pt-4">
+                    <h2 class="text-lg font-bold text-white mb-2 leading-snug">mysql backup restore</h2>
+                    <p class="text-slate-300 text-sm mb-4 leading-relaxed">
+                        Guia prático e direto sobre como realizar backups completos, exportação segura e restauração rápida de bancos de dados MySQL via linha de comando.
+                    </p>
+                </div>
+
+                <!-- Responsive YouTube Player -->
+                <div class="relative w-full pb-[56.25%] bg-black">
+                    <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/W374RVnZlkQ" title="mysql backup restore" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+
+                <!-- Action Bar -->
+                <div class="p-4 bg-slate-900/70 border-t border-slate-800 flex items-center justify-between text-slate-400 text-sm">
+                    <div class="flex items-center space-x-4">
+                        <button onclick="handleLike('W374RVnZlkQ', this)" class="like-btn flex items-center space-x-1.5 hover:text-[#00f0ff] transition-colors group">
+                            <span class="w-8 h-8 rounded-lg bg-slate-800 group-hover:bg-[#00f0ff]/10 flex items-center justify-center transition-colors">
+                                <i class="fa-regular fa-thumbs-up"></i>
+                            </span>
+                            <span class="like-count font-medium text-xs">215</span>
+                        </button>
+                        <button onclick="handleFavorite('W374RVnZlkQ', this)" class="fav-btn flex items-center space-x-1.5 hover:text-red-400 transition-colors group" title="Favoritar">
+                            <span class="w-8 h-8 rounded-lg bg-slate-800 group-hover:bg-red-500/10 flex items-center justify-center transition-colors">
+                                <i class="fa-regular fa-heart"></i>
+                            </span>
+                            <span class="fav-text text-xs font-medium hidden sm:inline">Salvar</span>
+                        </button>
+                    </div>
+                    <div>
+                        <button onclick="handleShare('https://www.youtube.com/watch?v=W374RVnZlkQ')" class="flex items-center space-x-1.5 hover:text-[#00f0ff] transition-colors group">
+                            <span class="w-8 h-8 rounded-lg bg-slate-800 group-hover:bg-[#00f0ff]/10 flex items-center justify-center transition-colors">
+                                <i class="fa-solid fa-share-nodes"></i>
+                            </span>
+                            <span class="text-xs font-medium">Compartilhar</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Comments Section -->
+                <div class="p-4 bg-slate-950/80 border-t border-slate-800">
+                    <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+                        <i class="fa-regular fa-comments text-[#00f0ff]"></i> Comentários (<span class="comment-count">0</span>)
+                    </h4>
+                    
+                    <div class="space-y-3 mb-4 comment-list">
+                        <!-- Dynamic Comments injected here -->
+                    </div>
+
+                    <!-- Add Comment Form -->
+                    <form onsubmit="addComment('W374RVnZlkQ', event, this)" class="flex gap-2">
+                        <input type="text" placeholder="Escreva um comentário..." required
+                            class="flex-grow bg-slate-900 text-slate-200 px-3 py-2 rounded-xl text-xs border border-slate-700/80 focus:outline-none focus:border-[#00f0ff] focus:ring-1 focus:ring-[#00f0ff]">
+                        <button type="submit" class="px-4 py-2 bg-gradient-to-r from-[#00f0ff] to-[#0077ff] hover:opacity-90 text-black font-bold text-xs rounded-xl shadow-md transition-all">
+                            Enviar
+                        </button>
+                    </form>
+                </div>
+            </article>
+
+            <!-- Video Card 4 -->
+            <article class="video-card bg-slate-900/90 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl hover:border-[#00f0ff]/40 transition-all duration-300" 
+                     data-id="zAYl6RHlizA" 
+                     data-title="faturando alto com 2 saas rodando no meu quarto o dev aguniado">
+                <div class="p-5 border-b border-slate-800/80 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-red-600 to-orange-600 flex items-center justify-center text-white font-bold text-sm shadow">
+                            DA
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-slate-200 text-sm sm:text-base">O DEV AGUNIADO</h3>
+                            <span class="text-xs text-slate-400 flex items-center gap-1"><i class="fa-regular fa-calendar text-[10px]"></i> Vídeo Oficial</span>
+                        </div>
+                    </div>
+                    <span class="px-2.5 py-1 rounded-full bg-[#00f0ff]/10 border border-[#00f0ff]/30 text-[#00f0ff] text-xs font-mono">Empreendedorismo</span>
+                </div>
+
+                <div class="px-5 pt-4">
+                    <h2 class="text-lg font-bold text-white mb-2 leading-snug">Faturando alto com 2 SaaS rodando no meu quarto</h2>
+                    <p class="text-slate-300 text-sm mb-4 leading-relaxed">
+                        Bastidores do desenvolvimento, validação de mercado e estratégias de monetização de softwares como serviço criados em casa.
+                    </p>
+                </div>
+
+                <!-- Responsive YouTube Player -->
+                <div class="relative w-full pb-[56.25%] bg-black">
+                    <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/zAYl6RHlizA" title="Faturando alto com 2 SaaS rodando no meu quarto" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+
+                <!-- Action Bar -->
+                <div class="p-4 bg-slate-900/70 border-t border-slate-800 flex items-center justify-between text-slate-400 text-sm">
+                    <div class="flex items-center space-x-4">
+                        <button onclick="handleLike('zAYl6RHlizA', this)" class="like-btn flex items-center space-x-1.5 hover:text-[#00f0ff] transition-colors group">
+                            <span class="w-8 h-8 rounded-lg bg-slate-800 group-hover:bg-[#00f0ff]/10 flex items-center justify-center transition-colors">
+                                <i class="fa-regular fa-thumbs-up"></i>
+                            </span>
+                            <span class="like-count font-medium text-xs">310</span>
+                        </button>
+                        <button onclick="handleFavorite('zAYl6RHlizA', this)" class="fav-btn flex items-center space-x-1.5 hover:text-red-400 transition-colors group" title="Favoritar">
+                            <span class="w-8 h-8 rounded-lg bg-slate-800 group-hover:bg-red-500/10 flex items-center justify-center transition-colors">
+                                <i class="fa-regular fa-heart"></i>
+                            </span>
+                            <span class="fav-text text-xs font-medium hidden sm:inline">Salvar</span>
+                        </button>
+                    </div>
+                    <div>
+                        <button onclick="handleShare('https://www.youtube.com/watch?v=zAYl6RHlizA')" class="flex items-center space-x-1.5 hover:text-[#00f0ff] transition-colors group">
+                            <span class="w-8 h-8 rounded-lg bg-slate-800 group-hover:bg-[#00f0ff]/10 flex items-center justify-center transition-colors">
+                                <i class="fa-solid fa-share-nodes"></i>
+                            </span>
+                            <span class="text-xs font-medium">Compartilhar</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Comments Section -->
+                <div class="p-4 bg-slate-950/80 border-t border-slate-800">
+                    <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+                        <i class="fa-regular fa-comments text-[#00f0ff]"></i> Comentários (<span class="comment-count">0</span>)
+                    </h4>
+                    
+                    <div class="space-y-3 mb-4 comment-list">
+                        <!-- Dynamic Comments injected here -->
+                    </div>
+
+                    <!-- Add Comment Form -->
+                    <form onsubmit="addComment('zAYl6RHlizA', event, this)" class="flex gap-2">
+                        <input type="text" placeholder="Escreva um comentário..." required
+                            class="flex-grow bg-slate-900 text-slate-200 px-3 py-2 rounded-xl text-xs border border-slate-700/80 focus:outline-none focus:border-[#00f0ff] focus:ring-1 focus:ring-[#00f0ff]">
+                        <button type="submit" class="px-4 py-2 bg-gradient-to-r from-[#00f0ff] to-[#0077ff] hover:opacity-90 text-black font-bold text-xs rounded-xl shadow-md transition-all">
+                            Enviar
+                        </button>
+                    </form>
+                </div>
+            </article>
+
+        </div>
+
+        <!-- No Results Message -->
+        <div id="noResults" class="hidden text-center py-16">
+            <i class="fa-solid fa-triangle-exclamation text-4xl text-[#00f0ff] mb-3"></i>
+            <h3 class="text-lg font-semibold text-white">Nenhum vídeo encontrado</h3>
+            <p class="text-slate-400 text-sm mt-1">Tente pesquisar com outros termos ou clique em <a href="index.html" onclick="resetHome(event)" class="text-[#00f0ff] underline">Início</a>.</p>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-slate-950/90 mt-12 py-8 text-center text-xs text-slate-500">
+        <div class="max-w-3xl mx-auto px-4 space-y-4">
+            <div class="flex items-center justify-center space-x-2">
+                <div class="w-6 h-6 rounded-lg bg-gradient-to-tr from-[#00f0ff] to-[#0077ff] flex items-center justify-center text-black text-xs font-bold">
+                    <i class="fa-solid fa-terminal"></i>
+                </div>
+                <span class="font-bold text-slate-300 text-sm">RamonInfTec</span>
+            </div>
+            <p>Tecnologia, Inovação e Soluções em TI. Todos os direitos reservados &copy; 2026.</p>
+            <div class="flex justify-center space-x-4 text-slate-400">
+                <a href="https://www.youtube.com/@ramoninftec" target="_blank" class="hover:text-[#00f0ff] transition-colors"><i class="fa-brands fa-youtube text-base"></i></a>
+                <a href="#" class="hover:text-[#00f0ff] transition-colors"><i class="fa-brands fa-github text-base"></i></a>
+                <a href="#" class="hover:text-[#00f0ff] transition-colors"><i class="fa-brands fa-linkedin text-base"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Interactive Logic with LocalStorage -->
+    <script>
+        // Toast Notification Function (Replaces alert)
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            const bgColor = type === 'success' ? 'bg-slate-900 border-[#00f0ff]/50 text-[#00f0ff]' : 'bg-slate-900 border-red-500/50 text-red-300';
+            const icon = type === 'success' ? 'fa-circle-check text-[#00f0ff]' : 'fa-circle-exclamation text-red-400';
+
+            toast.className = `pointer-events-auto flex items-center space-x-3 px-4 py-3 rounded-xl border ${bgColor} shadow-2xl backdrop-blur-md transition-all duration-300 translate-y-5 opacity-0`;
+            toast.innerHTML = `
+                <i class="fa-solid ${icon} text-lg"></i>
+                <span class="text-xs font-medium text-slate-200">${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => toast.classList.remove('translate-y-5', 'opacity-0'), 10);
+            setTimeout(() => {
+                toast.classList.add('translate-y-5', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Reset Home / Voltar function
+        function resetHome(event) {
+            if (event) event.preventDefault();
+            document.getElementById('searchInput').value = '';
+            document.getElementById('searchMobileInput').value = '';
+            filterVideos('');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            showToast('Página inicial recarregada!');
+        }
+
+        // Load state from localStorage on startup
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.video-card');
+            
+            cards.forEach(card => {
+                const videoId = card.getAttribute('data-id');
+                
+                // 1. Likes
+                const savedLikes = localStorage.getItem(`ramoninftec_likes_${videoId}`);
+                const isLiked = localStorage.getItem(`ramoninftec_liked_${videoId}`) === 'true';
+                const likeBtn = card.querySelector('.like-btn');
+                const likeCountSpan = card.querySelector('.like-count');
+                const likeIcon = likeBtn.querySelector('i');
+
+                if (savedLikes !== null) {
+                    likeCountSpan.textContent = savedLikes;
+                }
+                if (isLiked) {
+                    likeIcon.classList.remove('fa-regular');
+                    likeIcon.classList.add('fa-solid');
+                    likeIcon.style.color = '#00f0ff';
+                    likeCountSpan.style.color = '#00f0ff';
+                }
+
+                // 2. Favorites
+                const isFav = localStorage.getItem(`ramoninftec_fav_${videoId}`) === 'true';
+                const favBtn = card.querySelector('.fav-btn');
+                const favIcon = favBtn.querySelector('i');
+                const favText = favBtn.querySelector('.fav-text');
+
+                if (isFav) {
+                    favIcon.classList.remove('fa-regular');
+                    favIcon.classList.add('fa-solid');
+                    favIcon.style.color = '#ef4444';
+                    if (favText) favText.textContent = 'Salvo';
+                }
+
+                // 3. Comments
+                renderComments(videoId, card);
+            });
+        });
+
+        // Like Handler with LocalStorage
+        function handleLike(videoId, btn) {
+            const icon = btn.querySelector('i');
+            const countSpan = btn.querySelector('.like-count');
+            let count = parseInt(countSpan.textContent);
+            let isLiked = localStorage.getItem(`ramoninftec_liked_${videoId}`) === 'true';
+
+            if (!isLiked) {
+                count += 1;
+                isLiked = true;
+                icon.classList.remove('fa-regular');
+                icon.classList.add('fa-solid');
+                icon.style.color = '#00f0ff';
+                countSpan.style.color = '#00f0ff';
+                showToast('Você curtiu este vídeo!');
+            } else {
+                count -= 1;
+                isLiked = false;
+                icon.classList.remove('fa-solid');
+                icon.classList.add('fa-regular');
+                icon.style.color = '';
+                countSpan.style.color = '';
+                showToast('Curtida removida.');
+            }
+
+            countSpan.textContent = count;
+            localStorage.setItem(`ramoninftec_likes_${videoId}`, count);
+            localStorage.setItem(`ramoninftec_liked_${videoId}`, isLiked);
+        }
+
+        // Favorite Handler with LocalStorage
+        function handleFavorite(videoId, btn) {
+            const icon = btn.querySelector('i');
+            const textSpan = btn.querySelector('.fav-text');
+            let isFav = localStorage.getItem(`ramoninftec_fav_${videoId}`) === 'true';
+
+            isFav = !isFav;
+
+            if (isFav) {
+                icon.classList.remove('fa-regular');
+                icon.classList.add('fa-solid');
+                icon.style.color = '#ef4444';
+                if (textSpan) textSpan.textContent = 'Salvo';
+                showToast('Vídeo adicionado aos favoritos!');
+            } else {
+                icon.classList.remove('fa-solid');
+                icon.classList.add('fa-regular');
+                icon.style.color = '';
+                if (textSpan) textSpan.textContent = 'Salvar';
+                showToast('Vídeo removido dos favoritos.');
+            }
+
+            localStorage.setItem(`ramoninftec_fav_${videoId}`, isFav);
+        }
+
+        // Share Handler (using execCommand fallback)
+        function handleShare(url) {
+            const textArea = document.createElement("textarea");
+            textArea.value = url;
+            textArea.style.position = "fixed";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showToast('Link copiado para a área de transferência!');
+                } else {
+                    showToast('Não foi possível copiar o link.', 'error');
+                }
+            } catch (err) {
+                showToast('Erro ao copiar link.', 'error');
+            }
+
+            document.body.removeChild(textArea);
+        }
+
+        // Render Comments from LocalStorage
+        function renderComments(videoId, card) {
+            const commentList = card.querySelector('.comment-list');
+            const countSpan = card.querySelector('.comment-count');
+            let comments = JSON.parse(localStorage.getItem(`ramoninftec_comments_${videoId}`)) || [];
+
+            commentList.innerHTML = '';
+            countSpan.textContent = comments.length;
+
+            if (comments.length === 0) {
+                commentList.innerHTML = `<p class="text-[11px] text-slate-500 italic">Nenhum comentário ainda. Seja o primeiro a comentar!</p>`;
+                return;
+            }
+
+            comments.forEach(c => {
+                const div = document.createElement('div');
+                div.className = 'bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-xs';
+                div.innerHTML = `
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="font-semibold text-[#00f0ff]">${escapeHtml(c.author)}</span>
+                        <span class="text-[10px] text-slate-500">${escapeHtml(c.date)}</span>
+                    </div>
+                    <p class="text-slate-300">${escapeHtml(c.text)}</p>
+                `;
+                commentList.appendChild(div);
+            });
+        }
+
+        // Add Comment Handler with LocalStorage
+        function addComment(videoId, event, form) {
+            event.preventDefault();
+            const input = form.querySelector('input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const card = form.closest('article');
+            let comments = JSON.parse(localStorage.getItem(`ramoninftec_comments_${videoId}`)) || [];
+
+            const newComment = {
+                author: 'Visitante Tech',
+                text: text,
+                date: 'Agora mesmo'
+            };
+
+            comments.unshift(newComment);
+            localStorage.setItem(`ramoninftec_comments_${videoId}`, JSON.stringify(comments));
+
+            input.value = '';
+            renderComments(videoId, card);
+            showToast('Comentário publicado com sucesso!');
+        }
+
+        // Helper to prevent XSS
+        function escapeHtml(text) {
+            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
+        // Real-time Search Filter
+        function filterVideos(query) {
+            const term = query.toLowerCase().trim();
+            const cards = document.querySelectorAll('.video-card');
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const searchData = card.getAttribute('data-title') || '';
+                const titleText = card.querySelector('h2').textContent.toLowerCase();
+                const descText = card.querySelector('p').textContent.toLowerCase();
+
+                if (searchData.includes(term) || titleText.includes(term) || descText.includes(term)) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            const noResults = document.getElementById('noResults');
+            if (visibleCount === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+            }
+        }
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            document.getElementById('searchMobileInput').value = e.target.value;
+            filterVideos(e.target.value);
+        });
+
+        document.getElementById('searchMobileInput').addEventListener('input', (e) => {
+            document.getElementById('searchInput').value = e.target.value;
+            filterVideos(e.target.value);
+        });
+    </script>
+</body>
+</html>
